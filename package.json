@@ -8,19 +8,17 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-
     "i": "yarn && ( cd ios && bundle exec pod install --repo-update) && yarn fix-images",
     "cleani": "rm -rf node_modules && rm -rf ./ios/Pods && yarn && ( cd ios && bundle exec pod install ) && yarn fix-images",
     "fix-images": "npx react-native-fix-image",
     "podsUpdate": "cd ios && rm -rf Pods && rm -rf Podfile.lock && pod install && cd .. && rm -rf build && react-native run-ios",
     "gradleUpdate": "cd android && ./gradlew clean && cd .. && react-native run-android"
   },
-
   "dependencies": {
     "react": "18.2.0",
-    "react-native": "0.73.2"
+    "react-native": "0.73.2",
+    "react-native-safe-area-context": "^4.8.2"
   },
-  
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
