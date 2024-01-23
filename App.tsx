@@ -1,15 +1,13 @@
 import React from 'react'
-import { SafeAreaView, Text } from 'react-native'
-import { getFontFamily } from './assets/getFontFamily'
+import 'react-native-gesture-handler'
+import { NavigationContainer } from '@react-navigation/native'
+import { MainNavigation } from './src/navigation/MainNavigation'
 
 const App = (): JSX.Element => {
   return (
-    <SafeAreaView>
-      <Text
-        style={{ fontSize: 30, fontFamily: getFontFamily({ weight: '700' }) }}>
-        DONATION_APP
-      </Text>
-    </SafeAreaView>
+    <NavigationContainer>
+      <MainNavigation />
+    </NavigationContainer>
   )
 }
 
