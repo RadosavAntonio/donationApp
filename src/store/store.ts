@@ -4,6 +4,8 @@ import { persistReducer, persistStore } from 'redux-persist'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Categories, categoriesReducer } from './reducers/categories'
 import { Donations, donationsReducer } from './reducers/donations'
+import Reactotron from '../../ReactotronConfig'
+// import { logger } from 'redux-logger'
 
 export interface AppStore {
   user: UserData
@@ -27,6 +29,13 @@ const persistedReducer = persistReducer(configuration, rootReducer)
 
 export const store = configureStore({
   reducer: persistedReducer,
+  // middleware: getDefaultMiddleware => {
+  //   return getDefaultMiddleware().concat(logger)
+  // },
+  // enhancers: __DEV__ ? [Reactotron.createEnhancer!()] : [],
+  enhancers: getDefaultEnhancers => {
+    return getDefaultEnhancers().concat([Reactotron.createEnhancer!()])
+  },
 })
 
 export const persistor = persistStore(store)
