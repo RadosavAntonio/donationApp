@@ -10,9 +10,13 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch'
 
 interface Props {
   onSearch?: (val: string) => void
+  placeholder?: string
 }
 
-export const Search = ({ onSearch = () => {} }: Props): JSX.Element => {
+export const Search = ({
+  onSearch = () => {},
+  placeholder = 'Search',
+}: Props): JSX.Element => {
   const [search, setSearch] = useState('')
 
   const handleSearch = (searchValue: string) => {
@@ -30,7 +34,7 @@ export const Search = ({ onSearch = () => {} }: Props): JSX.Element => {
         style={styles.searchInput}
         value={search}
         onChangeText={value => handleSearch(value)}
-        placeholder="Search"
+        placeholder={placeholder}
       />
     </Pressable>
   )

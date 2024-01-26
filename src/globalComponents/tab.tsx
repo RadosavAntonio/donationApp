@@ -7,12 +7,14 @@ import {
 import { colors } from '../../assets/colors'
 
 interface Props {
+  tabId: number
   title: string
   isDisabled?: boolean
-  onPress?: () => void
+  onPress?: (tabId: number) => void
 }
 
 export const Tab = ({
+  tabId,
   title,
   isDisabled,
   onPress = () => {},
@@ -27,7 +29,7 @@ export const Tab = ({
     <Pressable
       disabled={isDisabled}
       style={[styles.tab, isDisabled && styles.inactiveTab, tabWidth]}
-      onPress={onPress}>
+      onPress={() => onPress(tabId)}>
       <Text
         onTextLayout={event => {
           setWidth(event.nativeEvent.lines[0].width)
