@@ -25,6 +25,7 @@ import {
   Categories,
   updateSelectedCategoryId,
 } from '../../store/reducers/categories'
+import { isAlpha } from '../../appConfig'
 
 export const Home = (): JSX.Element => {
   const dispatch = useDispatch()
@@ -33,7 +34,7 @@ export const Home = (): JSX.Element => {
   const categories = useSelector(
     (store: AppStore): Categories => store.categories,
   )
-  console.log('----user----', user)
+  console.log('----user----', user, isAlpha)
 
   return (
     <SafeAreaView edges={['top']} style={styles.container}>
