@@ -9,14 +9,14 @@ import { colors } from '../../assets/colors'
 interface Props {
   tabId: number
   title: string
-  isDisabled?: boolean
+  isSelected?: boolean
   onPress?: (tabId: number) => void
 }
 
 export const Tab = ({
   tabId,
   title,
-  isDisabled,
+  isSelected,
   onPress = () => {},
 }: Props): JSX.Element => {
   const [width, setWidth] = useState(0)
@@ -27,15 +27,14 @@ export const Tab = ({
   }
   return (
     <Pressable
-      disabled={isDisabled}
-      style={[styles.tab, isDisabled && styles.inactiveTab, tabWidth]}
+      style={[styles.tab, isSelected && styles.inactiveTab, tabWidth]}
       onPress={() => onPress(tabId)}>
       <Text
         onTextLayout={event => {
           setWidth(event.nativeEvent.lines[0].width)
         }}
         ref={textRef}
-        style={[styles.title, isDisabled && styles.inactiveTitle]}>
+        style={[styles.title, isSelected && styles.inactiveTitle]}>
         {title}
       </Text>
     </Pressable>

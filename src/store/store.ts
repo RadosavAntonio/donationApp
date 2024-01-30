@@ -24,15 +24,19 @@ const configuration = {
   key: 'root',
   storage: AsyncStorage,
   version: 1,
+  whitelist: ['user'],
+  blacklist: ['categories', 'donations'],
 }
 const persistedReducer = persistReducer(configuration, rootReducer)
 
 export const store = configureStore({
   reducer: persistedReducer,
-  // middleware: getDefaultMiddleware => {
-  //   return getDefaultMiddleware().concat(logger)
-  // },
-  // enhancers: __DEV__ ? [Reactotron.createEnhancer!()] : [],
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST'], // Add the action that's causing the error
+      },
+    }),
   enhancers: getDefaultEnhancers => {
     return getDefaultEnhancers().concat([Reactotron.createEnhancer!()])
   },

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export interface DonationData {
-  id: number
+  donationItemId: number
   name: string
   description: string
   image: string
@@ -10,7 +10,7 @@ export interface DonationData {
 }
 
 export interface Donations {
-  categories: DonationData[]
+  items: DonationData[]
   selectedCategoryId: number
 }
 

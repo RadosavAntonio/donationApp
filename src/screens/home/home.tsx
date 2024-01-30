@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   FlatList,
   Image,
@@ -26,15 +26,38 @@ import {
   updateSelectedCategoryId,
 } from '../../store/reducers/categories'
 import { isAlpha } from '../../appConfig'
+import { DonationData, Donations } from '../../store/reducers/donations'
+import { DonationItem } from '../../globalComponents/donationItem'
+import { useNavigation } from '@react-navigation/native'
+import { AppNavigationParams, Screen } from '../../navigation/navigation'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 export const Home = (): JSX.Element => {
   const dispatch = useDispatch()
+  const navigation = useNavigation<StackNavigationProp<AppNavigationParams>>()
 
   const user = useSelector((store: AppStore): UserData => store.user)
   const categories = useSelector(
     (store: AppStore): Categories => store.categories,
   )
-  console.log('----user----', user, isAlpha)
+  const donations = useSelector((store: AppStore): Donations => store.donations)
+
+  const [donationItems, setDonationItems] = useState<DonationData[]>([])
+  useEffect(() => {
+    const items = donations.items.filter(value =>
+      value.categoryIds.includes(categories.selectedCategoryId),
+    )
+    setDonationItems(items)
+  }, [categories.selectedCategoryId, donations.items])
+
+  // console.log(
+  //   '----user----',
+  //   user,
+  //   isAlpha,
+  //   categories,
+  //   donations,
+  //   donationItems,
+  // )
 
   return (
     <SafeAreaView edges={['top']} style={styles.container}>
@@ -87,13 +110,33 @@ export const Home = (): JSX.Element => {
               key={item.categoryId}>
               <Tab
                 tabId={item.categoryId}
-                onPress={value => dispatch(updateSelectedCategoryId(value))}
+                onPress={value => {
+                  console.log('Selected category ID:', value)
+                  dispatch(updateSelectedCategoryId(value))
+                }}
                 title={item.name}
-                isDisabled={item.categoryId !== categories.selectedCategoryId}
+                isSelected={item.categoryId !== categories.selectedCategoryId}
               />
             </View>
           )}
         />
+        {donationItems.length > 0 && (
+          <View style={styles.donationItemsContainer}>
+            {donationItems.map((item: DonationData) => (
+              <View key={item.donationItemId} style={styles.singleDonationItem}>
+                <DonationItem
+                  onPress={() =>
+                    navigation.navigate(Screen.DONATION_ITEM, item)
+                  }
+                  donationItemId={item.donationItemId}
+                  imageUrl={item.image}
+                  donationTitle={item.name}
+                  price={parseFloat(item.price)}
+                />
+              </View>
+            ))}
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   )
@@ -152,5 +195,18 @@ const styles = StyleSheet.create({
 
   categoryItem: {
     marginRight: getAdjustedWidth(10),
+  },
+
+  donationItemsContainer: {
+    marginTop: getAdjustedHeight(20),
+    marginHorizontal: getAdjustedWidth(24),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  },
+
+  singleDonationItem: {
+    maxWidth: '49%',
+    marginBottom: getAdjustedHeight(23),
   },
 })
