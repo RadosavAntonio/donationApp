@@ -8,9 +8,13 @@ import { colors } from '../../assets/colors'
 
 interface Props {
   title: string
+  pillWidth?: number
 }
 
-export const Badge = ({ title }: Props): JSX.Element => {
+export const DonationCategoryPill = ({
+  title,
+  pillWidth,
+}: Props): JSX.Element => {
   const [width, setWidth] = useState(0)
   const textRef = useRef(null)
   const paddingHorizontal = 10
@@ -21,10 +25,10 @@ export const Badge = ({ title }: Props): JSX.Element => {
     <View style={[styles.badge, badgeWidth]}>
       <Text
         onTextLayout={event => {
-          setWidth(event.nativeEvent.lines[0].width)
+          setWidth(pillWidth || event.nativeEvent.lines[0].width)
         }}
         ref={textRef}
-        style={[styles.title]}>
+        style={styles.title}>
         {title}
       </Text>
     </View>
@@ -34,10 +38,11 @@ export const Badge = ({ title }: Props): JSX.Element => {
 const styles = StyleSheet.create({
   badge: {
     backgroundColor: colors.caraPink700,
-    height: getAdjustedWidth(22),
     justifyContent: 'center',
     borderRadius: getAdjustedHeight(50),
+    paddingVertical: 6,
   },
+
   title: {
     fontFamily: 'Inter',
     fontSize: getAdjustedWidth(10),

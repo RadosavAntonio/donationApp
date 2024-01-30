@@ -1,34 +1,48 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, Pressable, StyleSheet, View } from 'react-native'
 import {
   getAdjustedHeight,
   getAdjustedWidth,
 } from '../../assets/globalUtilityFunctionsAndConstants'
 import { colors } from '../../assets/colors'
-import { Badge } from './badge'
 import { Header } from './header'
+import { useSelector } from 'react-redux'
+import { AppStore } from '../store/store'
+import { Categories, CategoriesData } from '../store/reducers/categories'
+import { DonationCategoryPill } from './donationCategoryPill'
 
 interface Props {
+  donationItemId: number
   imageUrl: string
-  badgeTitle: string
   donationTitle: string
   price: number
+  onPress: () => void
 }
 
 export const DonationItem = ({
+  donationItemId,
   imageUrl,
-  badgeTitle,
   donationTitle,
   price,
+  onPress,
 }: Props): JSX.Element => {
+  const categories = useSelector(
+    (store: AppStore): Categories => store.categories,
+  )
+
+  const badgeTitle =
+    categories.categories.find(
+      (cat: CategoriesData) => cat.categoryId === categories.selectedCategoryId,
+    )?.name || ''
+
   return (
-    <View>
+    <Pressable onPress={onPress}>
       <View>
         <View style={styles.badge}>
-          <Badge title={badgeTitle} />
+          <DonationCategoryPill title={badgeTitle} />
         </View>
         <Image
-          resizeMode={'contain'}
+          resizeMode={'cover'}
           source={{ uri: imageUrl }}
           style={styles.image}
         />
@@ -43,7 +57,7 @@ export const DonationItem = ({
           />
         </View>
       </View>
-    </View>
+    </Pressable>
   )
 }
 
@@ -51,16 +65,20 @@ const styles = StyleSheet.create({
   image: {
     width: getAdjustedWidth(155),
     height: getAdjustedHeight(170),
+    borderRadius: getAdjustedHeight(20),
   },
+
   badge: {
     position: 'absolute',
     zIndex: 1,
     top: getAdjustedHeight(13),
     left: getAdjustedWidth(10),
   },
+
   donationInformation: {
     marginTop: getAdjustedHeight(16),
   },
+
   price: {
     marginTop: getAdjustedHeight(5),
   },
