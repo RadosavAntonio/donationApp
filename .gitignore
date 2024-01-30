@@ -1,3 +1,15 @@
+ios/goss.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+.env
+android/app/src/main/assets/index.android.bundle
+android/app/src/staging/assets/index.android.bundle
+android/vendor/*
+vendor/*
+.temp
+
+tsconfig.tsbuildinfo
+.eslintcache
+ios/.xcode.env.local
+
 # OSX
 #
 .DS_Store
